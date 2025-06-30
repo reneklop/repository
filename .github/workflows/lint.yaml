@@ -14,3 +14,16 @@ on:
 jobs:
   workflows:
     uses: hassio-addons/workflows/.github/workflows/repository-lint.yaml@main
+
+  # Run codespell after the repository lint job to catch basic
+  # spelling mistakes. The job fails if any issues are detected.
+  codespell:
+    needs: workflows
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Spell check
+        uses: codespell-project/actions-codespell@v1
+        with:
+          check_filenames: true
+          check_hidden: true
